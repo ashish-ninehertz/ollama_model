@@ -1,11 +1,16 @@
 services:
-  - type: private_service
+  - type: web  # Use "web" for public access or "private_service" for internal access
     name: ollama-service
     env: docker
     plan: starter
     autoDeploy: false
     dockerContext: .
     dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 11434
+      - key: OLLAMA_HOST
+        value: 0.0.0.0:11434
     healthCheckPath: /
     ports:
       - 11434
