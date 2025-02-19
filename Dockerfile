@@ -10,5 +10,8 @@ RUN curl -fsSL https://ollama.ai/install.sh | sh
 # Expose the Ollama port
 EXPOSE 11434
 
-# Start Ollama and bind to 0.0.0.0
-CMD ollama serve --host 0.0.0.0 & sleep 2 && ollama pull mistral && tail -f /dev/null
+# Set the OLLAMA_HOST environment variable and start Ollama
+ENV OLLAMA_HOST=0.0.0.0:11434
+
+# Start Ollama and pull the model
+CMD ollama serve & sleep 2 && ollama pull mistral && tail -f /dev/null
