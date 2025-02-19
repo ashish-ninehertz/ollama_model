@@ -7,11 +7,8 @@ RUN apt-get update && apt-get install -y curl git
 # Install Ollama
 RUN curl -fsSL https://ollama.ai/install.sh | sh
 
-# Pull a specific Ollama model (e.g., Mistral)
-RUN ollama pull mistral
-
 # Expose the Ollama port
 EXPOSE 11434
 
-# Start Ollama server
-CMD ["ollama", "serve"]
+# Start the Ollama server and pull the model in the background
+CMD ollama serve & sleep 2 && ollama pull mistral && tail -f /dev/null
