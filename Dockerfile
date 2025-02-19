@@ -1,20 +1,20 @@
 # Use Ubuntu as the base image
 FROM ubuntu:22.04
 
-# Set noninteractive mode to prevent prompts
-ENV DEBIAN_FRONTEND=noninteractive
-
 # Install dependencies
-RUN apt update && apt install -y curl git sudo 
+RUN apt-get update && apt-get install -y curl git 
 
 # Install Ollama
-RUN curl -fsSL https://ollama.com/install.sh | sh
+RUN curl -fsSL https://ollama.ai/install.sh | sh
 
-# Download the Ollama model (e.g., "mistral")
-RUN ollama pull mistral
-
-# Expose the Ollama API port
+# Expose the Ollama port
 EXPOSE 11434
 
-# Start Ollama server
+# Set Ollama to bind to all interfaces
+ENV OLLAMA_HOST=0.0.0.0:11434
+
+# Start Ollama in the background, wait, and then pull the model
+RUN ollama serve & sleep 5 && ollama pull mistral
+
+# Start Ollama in the foreground
 CMD ["ollama", "serve"]
