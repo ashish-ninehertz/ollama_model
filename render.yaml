@@ -1,0 +1,11 @@
+services:
+  - type: private_service
+    name: ollama-service
+    env: docker
+    plan: starter
+    autoDeploy: false
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    ports:
+      - 11434
