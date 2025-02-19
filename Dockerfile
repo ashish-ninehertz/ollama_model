@@ -13,5 +13,8 @@ EXPOSE 11434
 # Set Ollama to bind to all interfaces
 ENV OLLAMA_HOST=0.0.0.0:11434
 
-# Start Ollama in foreground (no '&')
+# Ensure the model is pulled before starting the server
+RUN ollama pull mistral
+
+# Start Ollama in foreground
 CMD ["ollama", "serve"]
