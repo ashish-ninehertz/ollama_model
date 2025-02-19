@@ -1,19 +1,14 @@
-# Use Ubuntu as the base image
-FROM ubuntu:22.04
+# Use the official Ollama base image
+FROM ollama/ollama:latest
 
-# Set non-interactive mode for silent installation
-ENV DEBIAN_FRONTEND=noninteractive
+# Set environment variables
+ENV OLLAMA_HOST 0.0.0.0
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    curl git && \
-    rm -rf /var/lib/apt/lists/*
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /entrypoint.sh
 
-# Install Ollama
-RUN curl -fsSL https://ollama.com/install.sh | sh
+# Give execution permissions to the script
+RUN chmod +x /entrypoint.sh
 
-# Expose Ollama's default port
-EXPOSE 11434
-
-# Start Ollama and pull the model dynamically
-CMD ollama serve & sleep 5 && ollama pull mistral && tail -f /dev/null
+# Start the script on container startup
+CMD ["/entrypoint.sh"]
