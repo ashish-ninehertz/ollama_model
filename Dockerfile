@@ -15,8 +15,5 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 # Expose Ollama's default port
 EXPOSE 11434
 
-# Pull the required model (change to your model)
-RUN ollama pull mistral
-
-# Start Ollama when the container runs
-CMD ["ollama", "serve"]
+# Start Ollama and pull the model dynamically
+CMD ollama serve & sleep 5 && ollama pull mistral && tail -f /dev/null
